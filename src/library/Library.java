@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
-    private ArrayList<Book> books;
+    private static ArrayList<Book> books;
     private Librarian librarian;
     private static Library library;
 
@@ -25,7 +25,7 @@ public class Library {
     }
 
 
-    public ArrayList<Book> getBooks() {
+    public static ArrayList<Book> getBooks() {
         return books;
     }
 
@@ -48,4 +48,6 @@ public class Library {
     public static void setLibrary(Library library) {
         Library.library = library;
     }
+
+
 }

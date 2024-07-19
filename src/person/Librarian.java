@@ -8,7 +8,7 @@ import library.Library;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class Librarian {
@@ -26,7 +26,7 @@ public class Librarian {
                 return book;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Book with "+ bookId +" not found");
     }
 
     public void issueBook(Member member, Book book){
@@ -35,6 +35,9 @@ public class Librarian {
             book.updateStatus();
             Transaction.createTransaction("txn1",member.getMemId(),book.getBookId(),
                     Date.valueOf(LocalDate.now()),Date.valueOf(LocalDate.now().plusDays(7)));
+        }
+        else {
+            throw new IllegalArgumentException("Member with "+ member.getMemId() +" not eligible for issuing books.");
         }
 
     }
@@ -57,20 +60,15 @@ public class Librarian {
         if (transaction != null) {
             Date dueDate = transaction.getDueDate();
             double fine = calculateFine(dueDate);
-
             if (fine > 0) {
                 createBill("bill" + System.currentTimeMillis(), Date.valueOf(LocalDate.now()), member.getMemId(), fine);
                 System.out.println("Fine of " + fine + " has been charged to member " + member.getMemId());
             }
-
-
             book.updateStatus();
-
             member.decreaseBookIssued(1);
-
             Transaction.setIsReturned(true);
         } else {
-                System.out.println("Transaction not found for member " + member.getMemId() +
+                throw new IllegalArgumentException("Transaction not found for member " + member.getMemId() +
                         " and book " + book.getBookId());
         }
     }
@@ -88,7 +86,7 @@ public class Librarian {
                 return 1;
             }
         }
-        return 0;
+        throw new IllegalArgumentException("Book with "+ bookId + " not found");
     }
 
 

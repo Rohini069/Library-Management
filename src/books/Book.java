@@ -1,8 +1,8 @@
 package books;
 import java.sql.Date;
 
-public class Book {
-    private int BookId;
+public class Book implements Comparable<Book>{
+    private  int BookId;
     private String author;
     private String name;
     private double price;
@@ -41,7 +41,7 @@ public class Book {
         return status;
     }
 
-    public int getBookId() {
+    public  int getBookId() {
         return BookId;
     }
 
@@ -103,5 +103,10 @@ public class Book {
 
     public void setDateOfPurchase(Date dateOfPurchase) {
         this.dateOfPurchase = dateOfPurchase;
+    }
+
+    @Override
+    public int compareTo(Book o) {
+        return this.getBookId() - o.getBookId();
     }
 }
